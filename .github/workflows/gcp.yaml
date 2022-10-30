@@ -45,7 +45,7 @@ jobs:
           docker push ${{ env.IMAGE }}:${{ env.TAG }}
 
   deploy-cloud-run:
-    name: Build and Push to GCP
+    name: Deploy to Cloud Run
     runs-on: ubuntu-latest
     needs: build-push-gcp
     env:
@@ -55,6 +55,9 @@ jobs:
       REGION: us-central1
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Create Service declearation
         run: |-
           export IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.PROJECT_NAME }}:latest"
